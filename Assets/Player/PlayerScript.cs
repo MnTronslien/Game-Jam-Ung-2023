@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -13,7 +17,9 @@ public class PlayerScript : MonoBehaviour
     float rightInput;
 
     float thrust;
-   public float thrustMultiplier = 10f;
+    public float thrustMultiplier = 10f;
+
+    public int playerListIndex;
 
 
     public Rigidbody2D rb;
@@ -30,6 +36,8 @@ public class PlayerScript : MonoBehaviour
     public ParticleSystem leftThrusterParticles;
     public ParticleSystem rightThrusterParticles;
 
+    public Guid id = Guid.NewGuid();
+
 
 
     public enum PlayerNumber
@@ -39,9 +47,12 @@ public class PlayerScript : MonoBehaviour
         Player3,
     }
 
-    void Start(){
+    void Start()
+    {
         //Set player color
         GetComponent<SpriteRenderer>().color = playerColor;
+        Assert.IsTrue(GameManager.Instance != null);
+        playerListIndex = GameManager.Instance.AddPlayer(this);
     }
 
     // Update is called once per frame
@@ -116,7 +127,7 @@ public class PlayerScript : MonoBehaviour
         health -= amount;
         if (health < 0)
         {
-
+            GameManager.Instance.PlayerHealthReached0(this);
         }
     }
 }
