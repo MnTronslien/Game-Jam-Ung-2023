@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
 
     public PlayerNumber playerNumber;
+    public Color playerColor = Color.white;
 
     //Stats player health
     public int health = 100;
@@ -15,6 +13,7 @@ public class PlayerScript : MonoBehaviour
     float rightInput;
 
     float thrust;
+   public float thrustMultiplier = 10f;
 
 
     public Rigidbody2D rb;
@@ -40,11 +39,9 @@ public class PlayerScript : MonoBehaviour
         Player3,
     }
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
+    void Start(){
+        //Set player color
+        GetComponent<SpriteRenderer>().color = playerColor;
     }
 
     // Update is called once per frame
@@ -81,8 +78,8 @@ public class PlayerScript : MonoBehaviour
         if (thrust > 0)
         {
             //If thrusting add for ce from both thrusters in their respective directions
-            rb.AddForce(leftThruster.transform.up * 10);
-            rb.AddForce(rightThruster.transform.up * 10);
+            rb.AddForce(leftThruster.transform.up * thrustMultiplier * Time.deltaTime);
+            rb.AddForce(rightThruster.transform.up * thrustMultiplier * Time.deltaTime);
 
             //Play particles
             leftThrusterParticles.Play();
