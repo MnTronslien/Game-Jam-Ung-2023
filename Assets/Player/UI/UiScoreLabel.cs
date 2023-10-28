@@ -10,6 +10,10 @@ public class UiScoreLabel : MonoBehaviour {
         score += amount;
         textMesh.text = score.ToString();
     }
+    public void SetScore(int amount) {
+        score = amount;
+        textMesh.text = score.ToString();
+    }
 
     internal void SetColor(Color color)
     {

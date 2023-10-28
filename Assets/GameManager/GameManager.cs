@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
-
+        uiScoreLabelPrefab.gameObject.SetActive(false);
 
 
     }
@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
             uiScoreLabel = Instantiate(uiScoreLabelPrefab, uiScoreLabelPrefab.transform.parent)
         };
         newPlayer.uiScoreLabel.SetColor(newPlayer.color);
+        newPlayer.uiScoreLabel.SetScore(0);
         newPlayer.uiScoreLabel.gameObject.SetActive(true);
 
         players.Add(newPlayer);
@@ -70,8 +71,6 @@ public class GameManager : MonoBehaviour
             if (p.IsAlive)
             {
                 p.score += 1;
-                alivePlayerCount += 1;
-                last = p;
             }
         }
 
@@ -90,6 +89,7 @@ public class GameManager : MonoBehaviour
 
         //Pause game
         //SHow UI for winning player - this should be another scene with podium and stuff
+    }
 
     private void FinishRound()
     {

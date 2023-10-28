@@ -152,6 +152,6 @@ public class PlayerScript : MonoBehaviour
 
     private void Die()
     {
-        //TODO: Impelemnt any death animations and object despawn.
+        Destroy(gameObject);
     }
 }
