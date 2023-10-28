@@ -615,7 +615,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88a3f6eefaca7046975c406c23ad145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players: []
 --- !u!4 &745860279
 Transform:
   m_ObjectHideFlags: 0
@@ -948,6 +947,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 745860279}
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1102807273720820434}
@@ -958,4 +958,3 @@ SceneRoots:
   - {fileID: 1093595472}
   - {fileID: 2014487112}
   - {fileID: 646674586}
-  - {fileID: 745860279}
