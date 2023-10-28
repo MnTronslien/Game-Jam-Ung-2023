@@ -6,6 +6,8 @@ using UnityEngine;
 public class SpikeScript : MonoBehaviour
 {
     public float force = 100000;
+    public SpriteRenderer SpriteGlow, SpriteFaded;
+    public float glowAmount;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +18,8 @@ public class SpikeScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float sinus = (Mathf.Sin(Time.time)/2) + 0.5f; //0 - 1
+        SpriteGlow.Color.a = sinus;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
