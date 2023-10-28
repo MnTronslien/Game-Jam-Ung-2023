@@ -20,7 +20,7 @@ public class SpikeScript : MonoBehaviour
     void Update()
     {
         float sinus = (Mathf.Sin(Time.time)/2) + 0.5f; //0 - 1
-        Debug.Log($"time is: {Time.time}, and sinus is {sinus}");
+        // Debug.Log($"time is: {Time.time}, and sinus is {sinus}");
         var newColor = SpriteGlow.color;
         newColor.a = sinus;
         SpriteGlow.color = newColor;

@@ -52,7 +52,7 @@ public class PlayerScript : MonoBehaviour
         //Set player color
         GetComponent<SpriteRenderer>().color = playerColor;
         Assert.IsTrue(GameManager.Instance != null);
-        playerListIndex = GameManager.Instance.AddPlayer(this);
+        GameManager.Instance.AddPlayer(this);
     }
 
     // Update is called once per frame
