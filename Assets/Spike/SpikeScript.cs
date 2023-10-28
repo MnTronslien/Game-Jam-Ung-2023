@@ -19,7 +19,7 @@ public class SpikeScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float sinus = (Mathf.Sin(Time.time)/2) + 0.5f; //0 - 1
+        float sinus = (Mathf.Sin(Time.time) / 2) + 0.5f; //0 - 1
         var newColor = SpriteGlow.color;
         newColor.a = sinus;
         SpriteGlow.color = newColor;
@@ -30,15 +30,11 @@ public class SpikeScript : MonoBehaviour
         Collider2D other = collision.collider;
         Rigidbody2D otherRigidBody = other.GameObject().GetComponent<Rigidbody2D>();
         Debug.Log(other.tag);
-        if (other.tag == "Player")
+        if (other.TryGetComponent<PlayerScript>(out var player))
         {
-            PlayerScript playerScript = other.GetComponent<PlayerScript>();
-            if (playerScript != null) {
-                playerScript.TakeDamage(damage);
-            }
             Debug.Log("Collided with player");
-            otherRigidBody.AddForce(transform.up * Time.deltaTime * force);
-
+            player.TakeDamage(damage);
+            otherRigidBody.AddForce(force * Time.deltaTime * transform.up);
         }
     }
 }

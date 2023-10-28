@@ -1,18 +1,21 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
+using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager _instance;
 
     public static GameManager Instance;
     private List<PlayerInfo> players = new List<PlayerInfo>();
+
+    //UI score script prefab
+    public UiScoreLabel uiScoreLabelPrefab;
+
+
 
     // Start is called before the first frame update
     void Awake()
@@ -26,49 +29,66 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(Instance);
     }
 
+    void Start()
+    {
+
+        uiScoreLabelPrefab.gameObject.SetActive(false);
+
+
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void AddPlayer(PlayerScript player) {
-        players.Add(new PlayerInfo() {
+    public void AddPlayer(PlayerScript player)
+    {
+        var newPlayer = new PlayerInfo()
+        {
             player = player,
-            color = player.playerColor
-        });
+            color = player.playerColor,
+            uiScoreLabel = Instantiate(uiScoreLabelPrefab, uiScoreLabelPrefab.transform.parent)
+        };
+        newPlayer.uiScoreLabel.SetColor(newPlayer.color);
+        newPlayer.uiScoreLabel.SetScore(0);
+        newPlayer.uiScoreLabel.gameObject.SetActive(true);
+
+        players.Add(newPlayer);
+
+
+        //move player ui to the right place
+
     }
 
-    public void PlayerHealthReached0(PlayerScript player) {
+    public void PlayerHealthReached0(PlayerScript player)
+    {
         //When a player dies, we need to add score to all the other players
 
-        int alivePlayerCount = 0;
-        // if there's only 1 player left, this tracks them
-        // will only be accessed if alivePlayerCount is 1
-        PlayerInfo last = null;
-
-        foreach (var p in players) {
-            if (p.IsAlive) {
+        foreach (var p in players)
+        {
+            if (p.IsAlive)
+            {
                 p.score += 1;
-                alivePlayerCount += 1;
-                last = p;
             }
         }
 
         //Update UI
-        UpdateUI();
+        UpdateUI(players);
 
-        //Then if there are only onle player alive, we declare a winner.
-            //Pause game
-            //SHow UI for winning player - this should be another scene with podium and stuff
-        if (alivePlayerCount == 1) {
-            // there's only one player left, e.g. that player has wom
-            // the 'last' variable is a reference to that player
-            if (last != null) {
-                last.score += 1;
-            };
-            FinishRound();
+        //Then if there are only one player alive, we declare a winner.
+        if (players.Count(p => p.IsAlive) == 1)
+        {
+            //Give living player 1 point
+            var winner = players.First(p => p.IsAlive);
+            winner.score += 1;
+
+            SceneManager.LoadScene("WinScene"); //Win scene has an animator script which will show the winner
         }
+
+        //Pause game
+        //SHow UI for winning player - this should be another scene with podium and stuff
     }
 
     private void FinishRound()
@@ -76,21 +96,27 @@ public class GameManager : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    private void UpdateUI()
+    private void UpdateUI(List<PlayerInfo> players)
     {
-        throw new NotImplementedException();
+        //FOR each player in players, set the score in the UI
+        foreach (var p in players)
+        {
+            p.uiScoreLabel.AddScore(p.score);
+        }
     }
 
-    private class PlayerInfo
+    internal class PlayerInfo
     {
         public PlayerScript player;
+
+        public UiScoreLabel uiScoreLabel;
 
         public int score = 0;
 
         public Color color;
 
         public bool IsAlive => player.health > 0;
-  
+
     }
 
 }
