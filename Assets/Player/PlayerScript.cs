@@ -24,6 +24,7 @@ public class PlayerScript : MonoBehaviour
 
 
     public Rigidbody2D rb;
+    public GameObject PowEffect;
     public GameObject leftThruster;
     public GameObject rightThruster;
 
@@ -132,11 +133,15 @@ public class PlayerScript : MonoBehaviour
                 ColliderScript.CoolDown = 0.3f;
                 other.rigidbody.velocity = rb.velocity*2;
                 rb.velocity /= -2;
+                Instantiate(PowEffect, new Vector3(transform.position.x, transform.position.y, 2), Quaternion.identity);
+                JuiceManager.PauseFor(2000f);
             }else if(rb.velocity.magnitude*thrust < other.rigidbody.velocity.magnitude*ColliderScript.thrust && CoolDown <= 0 && ColliderScript.CoolDown <= 0){
                 other.rigidbody.angularVelocity = 0f;
                 CoolDown = 1f;
                 rb.velocity = other.rigidbody.velocity*2;
                 other.rigidbody.velocity /= -2;
+                Instantiate(PowEffect, new Vector3(transform.position.x, transform.position.y, 2), Quaternion.identity);
+                JuiceManager.PauseFor(2000f);
             }
         }
     }
