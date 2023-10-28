@@ -55,7 +55,13 @@ public class PlayerScript : MonoBehaviour
     {
         if (leftInput > 0)
         {
-            rb.rotation += 1 * Time.deltaTime * 100;
+            if (thrust > 0){//resets the angular velocity
+                rb.angularVelocity = 0f;
+                rb.rotation += 1 * Time.deltaTime * 100;
+            }else{
+                rb.rotation += 2 * Time.deltaTime * 100;
+            }
+            
             //Set thruster local rotation to be 90 degrees to the right
             rightThruster.transform.localRotation = Quaternion.Euler(0, 0, 90);
         }
@@ -66,7 +72,12 @@ public class PlayerScript : MonoBehaviour
         }
         if (rightInput > 0)
         {
-            rb.rotation -= 1 * Time.deltaTime * 100;
+            if (thrust > 0){
+                rb.angularVelocity = 0f;//resets the angular velocity
+                rb.rotation -= 1 * Time.deltaTime * 100;
+            }else{
+                rb.rotation -= 2 * Time.deltaTime * 100;
+            }
             //Set thruster local rotation to be 90 degrees to the right
             leftThruster.transform.localRotation = Quaternion.Euler(0, 0, -90);
         }
