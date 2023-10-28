@@ -216,6 +216,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   force: 10000
+  damage: 10
+  SpriteGlow: {fileID: 2360969563654333376}
+  SpriteFaded: {fileID: 0}
+  glowAmount: 0
 --- !u!60 &5469512615177846750
 PolygonCollider2D:
   m_ObjectHideFlags: 0
