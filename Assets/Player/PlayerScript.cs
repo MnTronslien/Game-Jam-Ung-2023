@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -38,6 +39,7 @@ public class PlayerScript : MonoBehaviour
 
     public Guid id = Guid.NewGuid();
 
+    public float CoolDown = 0f;
 
 
     public enum PlayerNumber
@@ -57,6 +59,7 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (CoolDown > 0f) CoolDown -= Time.deltaTime; 
         GetInput();
         ActOnInput();
     }
@@ -96,7 +99,7 @@ public class PlayerScript : MonoBehaviour
             //Set thruster local rotation to be 0 degrees
             leftThruster.transform.localRotation = Quaternion.Euler(0, 0, -30);
         }
-        if (thrust > 0)
+        if (thrust > 0 && CoolDown <= 0)//hvis spilleren ble truffet så kan de ikke booste til cooldownen er over
         {
             //If thrusting add for ce from both thrusters in their respective directions
             rb.AddForce(leftThruster.transform.up * thrustMultiplier * Time.deltaTime);
@@ -120,7 +123,23 @@ public class PlayerScript : MonoBehaviour
         rightInput = Input.GetKey(rightThrusterKey) ? 1 : 0;
         thrust = Input.GetKey(thrustKey) ? 1 : 0;
     }
-
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.tag == "Player"){
+            Debug.Log(gameObject.name + " hit " + other.gameObject.name);
+            PlayerScript ColliderScript = other.gameObject.GetComponent<PlayerScript>();
+            if(rb.velocity.magnitude*thrust > other.rigidbody.velocity.magnitude*ColliderScript.thrust && CoolDown <= 0 && ColliderScript.CoolDown <= 0){//denne har størst fart
+                rb.angularVelocity = 1f;
+                ColliderScript.CoolDown = 0.3f;
+                other.rigidbody.velocity = rb.velocity*2;
+                rb.velocity /= -2;
+            }else if(rb.velocity.magnitude*thrust < other.rigidbody.velocity.magnitude*ColliderScript.thrust && CoolDown <= 0 && ColliderScript.CoolDown <= 0){
+                other.rigidbody.angularVelocity = 0f;
+                CoolDown = 1f;
+                rb.velocity = other.rigidbody.velocity*2;
+                other.rigidbody.velocity /= -2;
+            }
+        }
+    }
     public void TakeDamage(int amount)
     {
         health -= amount;
