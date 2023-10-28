@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
 
     public static GameManager Instance;
-    public List<PlayerScript> players = new List<PlayerScript>();
+    private List<PlayerInfo> players = new List<PlayerInfo>();
 
     // Start is called before the first frame update
     void Awake()
@@ -33,11 +33,45 @@ public class GameManager : MonoBehaviour
     }
 
     public void AddPlayer(PlayerScript player) {
-        players.Add(player);
+        players.Add(new PlayerInfo() {
+            player = player,
+            color = player.playerColor
+        });
     }
 
     public void PlayerHealthReached0(PlayerScript player) {
-        int idx = players.IndexOf(player);
-        Debug.Log($"Got player {idx}");
+        //When a player dies, we need to add score to all the other players
+
+        foreach (var p in players) {
+            if (p.IsAlive) {
+                p.score += 1;
+            }
+        }
+
+        //Update UI
+        UpdateUI();
+
+        //Then if there are only onle player alive, we declare a winner.
+            //Pause game
+            //SHow UI for winning player - this should be another scene with podium and stuff
+
     }
+
+    private void UpdateUI()
+    {
+        throw new NotImplementedException();
+    }
+
+    private class PlayerInfo
+    {
+        public PlayerScript player;
+
+        public int score = 0;
+
+        public Color color;
+
+        public bool IsAlive => player.health > 0;
+  
+    }
+
 }

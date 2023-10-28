@@ -124,9 +124,15 @@ public class PlayerScript : MonoBehaviour
     public void TakeDamage(int amount)
     {
         health -= amount;
-        if (health < 0)
+        if (health <= 0)
         {
             GameManager.Instance.PlayerHealthReached0(this);
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        //TODO: Impelemnt any death animations and object despawn.
     }
 }
