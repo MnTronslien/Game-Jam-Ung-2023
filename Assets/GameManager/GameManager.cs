@@ -9,9 +9,10 @@ using UnityEngine.Assertions;
 
 public class GameManager : MonoBehaviour
 {
+    private static GameManager _instance;
+
     public static GameManager Instance;
     public List<PlayerScript> players = new List<PlayerScript>();
-    public Guid id = Guid.NewGuid();
 
     // Start is called before the first frame update
     void Awake()
@@ -33,7 +34,6 @@ public class GameManager : MonoBehaviour
 
     public void AddPlayer(PlayerScript player) {
         players.Add(player);
-        Debug.Log($"Added player to {players} in ID {id}, currently at length {players.Count}");
     }
 
     public void PlayerHealthReached0(PlayerScript player) {

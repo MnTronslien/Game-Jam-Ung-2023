@@ -51,7 +51,6 @@ public class PlayerScript : MonoBehaviour
     {
         //Set player color
         GetComponent<SpriteRenderer>().color = playerColor;
-        Assert.IsTrue(GameManager.Instance != null);
         GameManager.Instance.AddPlayer(this);
     }
 
