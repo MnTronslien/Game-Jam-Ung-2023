@@ -6,6 +6,7 @@ using UnityEngine;
 public class SpikeScript : MonoBehaviour
 {
     public float force = 100000;
+    public int damage = 10;
     public SpriteRenderer SpriteGlow, SpriteFaded;
     public float glowAmount;
 
@@ -29,8 +30,13 @@ public class SpikeScript : MonoBehaviour
         Debug.Log(other.tag);
         if (other.tag == "Player")
         {
+            PlayerScript playerScript = other.GetComponent<PlayerScript>();
+            if (playerScript != null) {
+                playerScript.TakeDamage(damage);
+            }
             Debug.Log("Collided with player");
             otherRigidBody.AddForce(transform.up * Time.deltaTime * force);
+
         }
     }
 }

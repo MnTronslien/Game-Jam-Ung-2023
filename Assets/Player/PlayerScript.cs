@@ -99,4 +99,13 @@ public class PlayerScript : MonoBehaviour
         rightInput = Input.GetKey(rightThrusterKey) ? 1 : 0;
         thrust = Input.GetKey(thrustKey) ? 1 : 0;
     }
+
+    public void TakeDamage(int amount)
+    {
+        health -= amount;
+        if (health < 0)
+        {
+
+        }
+    }
 }
