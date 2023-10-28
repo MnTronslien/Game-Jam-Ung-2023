@@ -106,7 +106,9 @@ MonoBehaviour:
   playerColor: {r: 0, g: 0.6698113, b: 0.055728607, a: 1}
   health: 100
   thrustMultiplier: 1000
+  playerListIndex: 0
   rb: {fileID: 7600997686530116456}
+  PowEffect: {fileID: 4324734164259023181, guid: 9f11a8e41eaee7b418bdacbf21034a9f, type: 3}
   leftThruster: {fileID: 5387088148791555743}
   rightThruster: {fileID: 7093938901464885798}
   leftThrusterKey: 97
@@ -114,6 +116,7 @@ MonoBehaviour:
   thrustKey: 115
   leftThrusterParticles: {fileID: 4868930601602799006}
   rightThrusterParticles: {fileID: 7958942501101626087}
+  CoolDown: 0
 --- !u!50 &7600997686530116456
 Rigidbody2D:
   serializedVersion: 4

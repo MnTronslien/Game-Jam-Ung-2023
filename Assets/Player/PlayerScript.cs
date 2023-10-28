@@ -60,7 +60,8 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CoolDown > 0f) CoolDown -= Time.deltaTime; 
+        if (CoolDown > 0f) CoolDown -= Time.deltaTime;
+        if (transform.position.y < -100f) TakeDamage(9999);
         GetInput();
         ActOnInput();
     }
@@ -73,6 +74,7 @@ public class PlayerScript : MonoBehaviour
                 rb.angularVelocity = 0f;
                 rb.rotation += 1 * Time.deltaTime * 100;
             }else{
+                rb.angularVelocity = 0f;//resets the angular velocity
                 rb.rotation += 2 * Time.deltaTime * 100;
             }
             
@@ -90,6 +92,7 @@ public class PlayerScript : MonoBehaviour
                 rb.angularVelocity = 0f;//resets the angular velocity
                 rb.rotation -= 1 * Time.deltaTime * 100;
             }else{
+                rb.angularVelocity = 0f;
                 rb.rotation -= 2 * Time.deltaTime * 100;
             }
             //Set thruster local rotation to be 90 degrees to the right
