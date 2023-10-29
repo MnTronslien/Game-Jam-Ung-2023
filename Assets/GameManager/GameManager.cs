@@ -171,6 +171,11 @@ public class GameManager : MonoBehaviour
         foreach (var p in players)
         {
             p.uiScoreLabel.SetScore(p.score);
+
+            if (p.score >= winningScore)
+            {
+                p.uiScoreLabel.SetDead();
+            }
         }
     }
 
