@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player 3
   m_EditorClassIdentifier: 
   playerName: Chad
-  color: {r: 0.1768868, g: 0.27914816, b: 0.7075472, a: 1}
+  color: {r: 0.25943398, g: 1, b: 0.7975135, a: 1}
   leftThrusterKey: 106
   rightThrusterKey: 108
   thrustKey: 107
