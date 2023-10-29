@@ -67,9 +67,41 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         if (CoolDown > 0f) CoolDown -= Time.deltaTime;
-        if (transform.position.y < -100f) TakeDamage(9999);
+
+
+
+        //if (transform.position.y < -100f) TakeDamage(9999);
+        HandleOutOfBounds();
         GetInput();
         ActOnInput();
+
+
+
+
+    }
+    float outOfBoundsTimer = 0f;
+    private void HandleOutOfBounds()
+    {
+        //Get main camera
+        var mainCamera = Camera.main;
+        //Get the position of the player in screen space
+        var screenPos = mainCamera.WorldToScreenPoint(transform.position);
+        //If the player is outside the screen
+        if (screenPos.x < 0 || screenPos.x > Screen.width || screenPos.y < 0 || screenPos.y > Screen.height)
+        {
+
+            outOfBoundsTimer += Time.deltaTime;
+
+            if (outOfBoundsTimer > 1f)
+            {
+                //Kill the player
+                TakeDamage(9999);
+            }
+
+        } else
+        {
+            outOfBoundsTimer = 0f;
+        }
     }
 
     private void ActOnInput()
