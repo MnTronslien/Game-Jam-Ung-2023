@@ -115,6 +115,10 @@ MonoBehaviour:
   leftThrusterParticles: {fileID: 4868930601602799006}
   rightThrusterParticles: {fileID: 7958942501101626087}
   CoolDown: 0
+  grunts:
+  - {fileID: 8300000, guid: 29f65ceb2adbed54c8565a077a2eb623, type: 3}
+  - {fileID: 8300000, guid: 45d05532fe4bcc14782ac08bd44b33e2, type: 3}
+  - {fileID: 8300000, guid: 4ca4a20ca3b71f94ab7c52c350660914, type: 3}
 --- !u!50 &7600997686530116456
 Rigidbody2D:
   serializedVersion: 4

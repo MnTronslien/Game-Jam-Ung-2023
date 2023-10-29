@@ -40,6 +40,11 @@ public class PlayerScript : MonoBehaviour
 
     private TrailRenderer trailRenderer;
 
+    [Header("Audio")]
+    public List<AudioClip> grunts;
+
+    [Header("Audio")]
+    public List<AudioClip> damageGrunts;
 
     public enum PlayerNumber
     {
@@ -129,7 +134,16 @@ public class PlayerScript : MonoBehaviour
         if(other.gameObject.tag == "Player"){
             Debug.Log(gameObject.name + " hit " + other.gameObject.name);
             PlayerScript ColliderScript = other.gameObject.GetComponent<PlayerScript>();
-            if(rb.velocity.magnitude*thrust > other.rigidbody.velocity.magnitude*ColliderScript.thrust && CoolDown <= 0 && ColliderScript.CoolDown <= 0){//denne har størst fart
+
+
+
+                //denne har størst fart
+            if(rb.velocity.magnitude*thrust > other.rigidbody.velocity.magnitude*ColliderScript.thrust && CoolDown <= 0 && ColliderScript.CoolDown <= 0){
+                
+                
+                //BUG: Is never reached
+                Debug.Log("This player should not grunt");
+
                 rb.angularVelocity = 1f;
                 ColliderScript.CoolDown = 0.3f;
                 other.rigidbody.velocity = rb.velocity*2;
@@ -137,17 +151,25 @@ public class PlayerScript : MonoBehaviour
                 Instantiate(PowEffect, new Vector3(transform.position.x, transform.position.y, 2), Quaternion.identity);
                 JuiceManager.PauseFor(2000f);
             }else if(rb.velocity.magnitude*thrust < other.rigidbody.velocity.magnitude*ColliderScript.thrust && CoolDown <= 0 && ColliderScript.CoolDown <= 0){
+
+                Debug.Log("the Player wo has most velocity shall now grunt");
+                var grunt = grunts[UnityEngine.Random.Range(0, grunts.Count)];
+                DropSoundManager.Instance.PlayDropSound(grunt, varyPitch:true);
+
+
                 other.rigidbody.angularVelocity = 0f;
                 CoolDown = 1f;
                 rb.velocity = other.rigidbody.velocity*2;
                 other.rigidbody.velocity /= -2;
                 Instantiate(PowEffect, new Vector3(transform.position.x, transform.position.y, 2), Quaternion.identity);
-                JuiceManager.PauseFor(2000f);
             }
         }
     }
     public void TakeDamage(int amount)
     {
+        var grunt = damageGrunts[UnityEngine.Random.Range(0, damageGrunts.Count)];
+        DropSoundManager.Instance.PlayDropSound(grunt, varyPitch:true);
+
         health -= amount;
         if (health <= 0)
         {
