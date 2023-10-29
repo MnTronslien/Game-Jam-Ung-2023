@@ -24,6 +24,7 @@ public class PlayerScript : MonoBehaviour
 
 
     public Rigidbody2D rb;
+    public GameObject PowEffect;
     public GameObject leftThruster;
     public GameObject rightThruster;
 
@@ -59,7 +60,8 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CoolDown > 0f) CoolDown -= Time.deltaTime; 
+        if (CoolDown > 0f) CoolDown -= Time.deltaTime;
+        if (transform.position.y < -100f) TakeDamage(9999);
         GetInput();
         ActOnInput();
     }
@@ -72,6 +74,7 @@ public class PlayerScript : MonoBehaviour
                 rb.angularVelocity = 0f;
                 rb.rotation += 1 * Time.deltaTime * 100;
             }else{
+                rb.angularVelocity = 0f;//resets the angular velocity
                 rb.rotation += 2 * Time.deltaTime * 100;
             }
             
@@ -89,6 +92,7 @@ public class PlayerScript : MonoBehaviour
                 rb.angularVelocity = 0f;//resets the angular velocity
                 rb.rotation -= 1 * Time.deltaTime * 100;
             }else{
+                rb.angularVelocity = 0f;
                 rb.rotation -= 2 * Time.deltaTime * 100;
             }
             //Set thruster local rotation to be 90 degrees to the right
@@ -132,11 +136,15 @@ public class PlayerScript : MonoBehaviour
                 ColliderScript.CoolDown = 0.3f;
                 other.rigidbody.velocity = rb.velocity*2;
                 rb.velocity /= -2;
+                Instantiate(PowEffect, new Vector3(transform.position.x, transform.position.y, 2), Quaternion.identity);
+                JuiceManager.PauseFor(2000f);
             }else if(rb.velocity.magnitude*thrust < other.rigidbody.velocity.magnitude*ColliderScript.thrust && CoolDown <= 0 && ColliderScript.CoolDown <= 0){
                 other.rigidbody.angularVelocity = 0f;
                 CoolDown = 1f;
                 rb.velocity = other.rigidbody.velocity*2;
                 other.rigidbody.velocity /= -2;
+                Instantiate(PowEffect, new Vector3(transform.position.x, transform.position.y, 2), Quaternion.identity);
+                JuiceManager.PauseFor(2000f);
             }
         }
     }
