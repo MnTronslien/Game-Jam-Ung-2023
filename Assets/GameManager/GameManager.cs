@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private List<PlayerInfo> players = new List<PlayerInfo>();
     [SerializeField] private PlayerScript playerPrefab;
     [SerializeField] private PlayerConfig[] playerConfigs;
+    public GameObject backgroundPrefab;
 
     //UI score script prefab
     public UiScoreLabel uiScoreLabelPrefab;

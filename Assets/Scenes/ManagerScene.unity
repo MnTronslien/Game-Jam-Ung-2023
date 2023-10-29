@@ -169,6 +169,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: df8d86387bb4d28469dc30e2b6255fcd, type: 2}
   - {fileID: 11400000, guid: aa42b419d1ea22d48942cec254b0db4d, type: 2}
   - {fileID: 11400000, guid: ad404d5ecfd6db84a961e1deec83f0cc, type: 2}
+  backgroundPrefab: {fileID: 5307739064403603453, guid: e55fcd759e0b01c4eabf29b00ea18eb4, type: 3}
   uiScoreLabelPrefab: {fileID: 698385244}
 --- !u!4 &745860279
 Transform:
