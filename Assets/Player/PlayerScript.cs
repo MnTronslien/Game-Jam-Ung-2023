@@ -45,6 +45,9 @@ public class PlayerScript : MonoBehaviour
 
     [Header("Audio")]
     public List<AudioClip> damageGrunts;
+    
+    [Header("Audio")]
+    public AudioClip jetpackLoop;
 
     public enum PlayerNumber
     {

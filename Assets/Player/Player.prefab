@@ -139,6 +139,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 58bde8155951b8d4abafa0e3a4ba2200, type: 3}
   - {fileID: 8300000, guid: 8a05d4b98f4528941af342f2d421bd41, type: 3}
   - {fileID: 8300000, guid: cbc1cfb10275ca442b16fef2be0fa703, type: 3}
+  jetpackLoop: {fileID: 8300000, guid: 2423d0228af694d4bad3407b560f56cb, type: 3}
 --- !u!50 &7600997686530116456
 Rigidbody2D:
   serializedVersion: 4
