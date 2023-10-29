@@ -119,20 +119,27 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 29f65ceb2adbed54c8565a077a2eb623, type: 3}
   - {fileID: 8300000, guid: 45d05532fe4bcc14782ac08bd44b33e2, type: 3}
   - {fileID: 8300000, guid: 4ca4a20ca3b71f94ab7c52c350660914, type: 3}
+  - {fileID: 8300000, guid: 591b0308192b6754489e77c420947be2, type: 3}
+  - {fileID: 8300000, guid: 3754fd12255dfc448a9c7838c1ac0c70, type: 3}
+  - {fileID: 8300000, guid: ecb83f8ba88cade4d9fa6aa1f9f7225f, type: 3}
+  - {fileID: 8300000, guid: 1b2207766057a7742b21b74b9edd595f, type: 3}
+  - {fileID: 8300000, guid: 7c45f62e196f0124295fdc10c58de4c0, type: 3}
+  - {fileID: 8300000, guid: 9b7acd4009bfa344994ff914294f7828, type: 3}
+  - {fileID: 8300000, guid: 188fa3cd92d30b942a2b21751ba97a66, type: 3}
+  - {fileID: 8300000, guid: 6f720bdd6930ca347bc4d3f93f8563c1, type: 3}
+  damageGrunts:
   - {fileID: 8300000, guid: d5df03a7420dc68489d4a327cbfffe89, type: 3}
   - {fileID: 8300000, guid: 87428f2a91a5c7a45aef25a05dcbc6e6, type: 3}
   - {fileID: 8300000, guid: c0c102395c537d4438311ed3016ee510, type: 3}
   - {fileID: 8300000, guid: ac6270055ec5361479eece7b4e5bef28, type: 3}
   - {fileID: 8300000, guid: 41ae35bf6268743468e50915547e55d8, type: 3}
-  - {fileID: 8300000, guid: 591b0308192b6754489e77c420947be2, type: 3}
-  - {fileID: 8300000, guid: 3754fd12255dfc448a9c7838c1ac0c70, type: 3}
-  - {fileID: 8300000, guid: ecb83f8ba88cade4d9fa6aa1f9f7225f, type: 3}
   - {fileID: 8300000, guid: 2b9fc8fa2766cd64aab32ac1600220bd, type: 3}
-  - {fileID: 8300000, guid: 1b2207766057a7742b21b74b9edd595f, type: 3}
-  - {fileID: 8300000, guid: 7c45f62e196f0124295fdc10c58de4c0, type: 3}
   - {fileID: 8300000, guid: 1d043e985c5a5e445aa953677727561d, type: 3}
   - {fileID: 8300000, guid: 36b272f5e542c1640b9529b937e24987, type: 3}
-  damageGrunts: []
+  - {fileID: 8300000, guid: 58bde8155951b8d4abafa0e3a4ba2200, type: 3}
+  - {fileID: 8300000, guid: 8a05d4b98f4528941af342f2d421bd41, type: 3}
+  - {fileID: 8300000, guid: cbc1cfb10275ca442b16fef2be0fa703, type: 3}
+  jetpackLoop: {fileID: 8300000, guid: 2423d0228af694d4bad3407b560f56cb, type: 3}
 --- !u!50 &7600997686530116456
 Rigidbody2D:
   serializedVersion: 4

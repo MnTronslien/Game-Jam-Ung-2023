@@ -7,6 +7,9 @@ using UnityEngine;
 public class WinScript : MonoBehaviour
 {
     public Rigidbody2D rb;
+    private AudioSource audioSource;
+    public AudioClip[] grunt;
+    private AudioClip gruntclip;
     public SpriteRenderer bg;
     private SpriteRenderer sp;
     public GameObject target;
@@ -16,6 +19,7 @@ public class WinScript : MonoBehaviour
     private float cooldown = 0f;
 
     void Start() {
+        audioSource = gameObject.GetComponent<AudioSource>();
         sp = gameObject.GetComponent<SpriteRenderer>();
         facevector = new Vector2(transform.position.x, transform.position.y+6);
         var winner = GameManager.Instance.Winner;
@@ -31,6 +35,12 @@ public class WinScript : MonoBehaviour
             Debug.Log("Jump!" + transform.rotation.z);
             rb.AddForceAtPosition(Force * (target.transform.position - transform.position).normalized, facevector);
             cooldown = Random.Range(0.5f, 1.5f);
+
+            int index = Random.Range(0, grunt.Length);
+            gruntclip = grunt[index];
+
+            audioSource.clip = gruntclip;
+            audioSource.Play();
         }
     }
 }
