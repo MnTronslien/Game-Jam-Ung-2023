@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void PlayerHealthReached0(PlayerScript player)
+    public async void PlayerHealthReached0(PlayerScript player)
     {
         //When a player dies, we need to add score to all the other players
         Debug.Log("GameManager: PlayerHealthReached0");
@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 //Load new level
-                LoadNewRandomLevelAsync(numberOfPlayers);
+                await LoadNewRandomLevelAsync(numberOfPlayers);
             }
 
 
