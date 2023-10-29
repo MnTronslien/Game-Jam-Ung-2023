@@ -13,7 +13,7 @@ public class LevelRotation : MonoBehaviour
     // rotation duration
     public Vector2 durationRange = new Vector2(2f, 10f);
 
-    public AnimationCurve curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.5f, 1), new Keyframe(1, 0));
+    public AnimationCurve curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.5f, 1), new Keyframe(0, 1));
     void Start()
     {
         NewRotationMethod();

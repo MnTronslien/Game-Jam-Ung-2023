@@ -31,7 +31,6 @@ private bool isClicked = false;
             switch (QuitButton){
                 case true:
                     Debug.Log("Game quit!");
-                    Application.Quit();
                     break;
                 case false:
                     Debug.Log("Button Clicked!");
