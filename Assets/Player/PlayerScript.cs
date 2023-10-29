@@ -43,6 +43,9 @@ public class PlayerScript : MonoBehaviour
     [Header("Audio")]
     public List<AudioClip> grunts;
 
+    [Header("Audio")]
+    public List<AudioClip> damageGrunts;
+
     public enum PlayerNumber
     {
         Player1,
@@ -164,6 +167,9 @@ public class PlayerScript : MonoBehaviour
     }
     public void TakeDamage(int amount)
     {
+        var grunt = damageGrunts[UnityEngine.Random.Range(0, damageGrunts.Count)];
+        DropSoundManager.Instance.PlayDropSound(grunt, varyPitch:true);
+
         health -= amount;
         if (health <= 0)
         {
