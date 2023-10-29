@@ -24,6 +24,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
             lock (_lock)
             {
+                Debug.Log("Attempting to instantiate singleton");
                 if (_instance == null)
                 {
                     _instance = (T)FindObjectOfType(typeof(T));
@@ -50,6 +51,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             }
         }
     }
+
+public void Awake(){
+    DontDestroyOnLoad(this);
+}
+
 
     //private static bool applicationIsQuitting = false;
     /// <summary>
