@@ -50,14 +50,14 @@ public class GameManager : MonoBehaviour
 
         await LoadNewRandomLevelAsync(numOfPlayers);
 
-        
+
 
     }
 
     private async Task LoadNewRandomLevelAsync(int numOfPlayers)
     {
         //Select a random level but exlude the first 2 levels and the last level
-        var levelIndex = UnityEngine.Random.Range(2, SceneManager.sceneCountInBuildSettings-1);
+        var levelIndex = UnityEngine.Random.Range(2, SceneManager.sceneCountInBuildSettings - 1);
         //GEt name of level
         var levelName = SceneUtility.GetScenePathByBuildIndex(levelIndex);
         Debug.Log($"Loading level {levelName} with index {levelIndex}");
@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         }
 
         //Spawn background
-        Instantiate(backgroundPrefab, Vector3.forward*100, Quaternion.identity);
+        Instantiate(backgroundPrefab, Vector3.forward * 100, Quaternion.identity);
     }
 
     // Start is called before the first frame update
@@ -171,12 +171,9 @@ public class GameManager : MonoBehaviour
         foreach (var p in players)
         {
             p.uiScoreLabel.SetScore(p.score);
-
-            if (p.score >= winningScore)
-            {
-                p.uiScoreLabel.SetDead();
-            }
+            p.uiScoreLabel.SetDead(!p.IsAlive());
         }
+
     }
 
 

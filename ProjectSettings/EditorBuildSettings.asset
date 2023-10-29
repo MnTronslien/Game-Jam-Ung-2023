@@ -14,7 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/tommyPlayground.unity
     guid: 436db1ad557c6ab4f89bd98124cc838c
-  - enabled: 0
+  - enabled: 1
+    path: Assets/Scenes/Level1.unity
+    guid: a05a2db54c3c6c144abbd4b3a8c9d33c
+  - enabled: 1
+    path: Assets/Scenes/LargeArena.unity
+    guid: 13d8e98ed0e0a084c917e2b9a5d901a0
+  - enabled: 1
     path: Assets/Scenes/box.unity
     guid: b159b5c3016dd4a4e8175090866b4393
   - enabled: 1

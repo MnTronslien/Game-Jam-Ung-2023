@@ -40,8 +40,8 @@ public class SpikeScript : MonoBehaviour
             otherRigidBody.AddForce(force * Time.deltaTime * transform.up);
             player.TakeDamage(damage);
             
-            var grunt = soundOnHit[UnityEngine.Random.Range(0, soundOnHit.Count)];
-            DropSoundManager.Instance.PlayDropSound(grunt, varyPitch:true);
+          //  var grunt = soundOnHit[UnityEngine.Random.Range(0, soundOnHit.Count)];
+           // DropSoundManager.Instance.PlayDropSound(grunt, varyPitch:true);
         }
     }
 }
