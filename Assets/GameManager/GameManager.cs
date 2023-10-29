@@ -83,6 +83,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(spawnPosition.gameObject);
         }
+
+        //Spawn background
+        Instantiate(backgroundPrefab, Vector3.forward*100, Quaternion.identity);
     }
 
     // Start is called before the first frame update
@@ -152,6 +155,10 @@ public class GameManager : MonoBehaviour
         //SHow UI for winning player - this should be another scene with podium and stuff
     }
 
+    public PlayerInfo Winner => players.OrderByDescending(p => p.score).First();
+
+    public List<PlayerInfo> Podium => players.OrderByDescending(p => p.score).ToList();
+
     private void FinishRound()
     {
         SceneManager.LoadScene("WinScene"); //Win scene has an animator script which will show the winner
@@ -180,7 +187,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    internal class PlayerInfo
+    public class PlayerInfo
     {
         public PlayerScript playerGameObject;
 
