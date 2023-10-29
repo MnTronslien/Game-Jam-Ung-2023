@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac35e3b54e3ac9544b0c37091e3bd303, type: 3}
   m_Name: Player 4
   m_EditorClassIdentifier: 
+  playerName: Arnold
   color: {r: 0.8301887, g: 0.7337305, b: 0.09789959, a: 1}
   leftThrusterKey: 260
   rightThrusterKey: 262

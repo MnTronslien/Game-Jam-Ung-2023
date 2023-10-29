@@ -56,8 +56,10 @@ public class GameManager : MonoBehaviour
     private async Task LoadNewRandomLevelAsync(int numOfPlayers)
     {
         //Select a random level but exlude the first 2 levels and the last level
-        var levelIndex = UnityEngine.Random.Range(3, SceneManager.sceneCountInBuildSettings);
-
+        var levelIndex = UnityEngine.Random.Range(2, SceneManager.sceneCountInBuildSettings-1);
+        //GEt name of level
+        var levelName = SceneUtility.GetScenePathByBuildIndex(levelIndex);
+        Debug.Log($"Loading level {levelName} with index {levelIndex}");
         await SceneManager.LoadSceneAsync(levelIndex);
 
         //Get spawn positions
