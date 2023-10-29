@@ -125,6 +125,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1b2207766057a7742b21b74b9edd595f, type: 3}
   - {fileID: 8300000, guid: 7c45f62e196f0124295fdc10c58de4c0, type: 3}
   - {fileID: 8300000, guid: 9b7acd4009bfa344994ff914294f7828, type: 3}
+  - {fileID: 8300000, guid: 188fa3cd92d30b942a2b21751ba97a66, type: 3}
+  - {fileID: 8300000, guid: 6f720bdd6930ca347bc4d3f93f8563c1, type: 3}
   damageGrunts:
   - {fileID: 8300000, guid: d5df03a7420dc68489d4a327cbfffe89, type: 3}
   - {fileID: 8300000, guid: 87428f2a91a5c7a45aef25a05dcbc6e6, type: 3}
@@ -135,6 +137,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1d043e985c5a5e445aa953677727561d, type: 3}
   - {fileID: 8300000, guid: 36b272f5e542c1640b9529b937e24987, type: 3}
   - {fileID: 8300000, guid: 58bde8155951b8d4abafa0e3a4ba2200, type: 3}
+  - {fileID: 8300000, guid: 8a05d4b98f4528941af342f2d421bd41, type: 3}
+  - {fileID: 8300000, guid: cbc1cfb10275ca442b16fef2be0fa703, type: 3}
 --- !u!50 &7600997686530116456
 Rigidbody2D:
   serializedVersion: 4
