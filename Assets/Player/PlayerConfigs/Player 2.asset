@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac35e3b54e3ac9544b0c37091e3bd303, type: 3}
   m_Name: Player 2
   m_EditorClassIdentifier: 
+  playerName: Drew
   color: {r: 0.06274511, g: 0.5294118, b: 0.2505696, a: 1}
   leftThrusterKey: 102
   rightThrusterKey: 104

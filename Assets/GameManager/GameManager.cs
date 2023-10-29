@@ -4,10 +4,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cysharp.Threading.Tasks;
+using TMPro;
+using System.Threading.Tasks;
+using UnityEngine.Assertions;
 
 public class GameManager : MonoBehaviour
 {
 
+    public int winningScore = 15;
     public static GameManager Instance;
     private List<PlayerInfo> players = new List<PlayerInfo>();
     [SerializeField] private PlayerScript playerPrefab;
@@ -44,14 +48,27 @@ public class GameManager : MonoBehaviour
 
 
 
+        await LoadNewRandomLevelAsync(numOfPlayers);
 
-        //Select a random level, but for now just load indext 2. NB: Remember to add the scene to the build settings
-        await SceneManager.LoadSceneAsync(2);
+        
+
+    }
+
+    private async Task LoadNewRandomLevelAsync(int numOfPlayers)
+    {
+        //Select a random level but exlude the first 2 levels and the last level
+        var levelIndex = UnityEngine.Random.Range(2, SceneManager.sceneCountInBuildSettings-1);
+        //GEt name of level
+        var levelName = SceneUtility.GetScenePathByBuildIndex(levelIndex);
+        Debug.Log($"Loading level {levelName} with index {levelIndex}");
+        await SceneManager.LoadSceneAsync(levelIndex);
 
         //Get spawn positions
         var spawnPositions = FindObjectsOfType<SpawnPosition>().ToList();
         //Scramble spawn positions
         spawnPositions = spawnPositions.OrderBy(x => Guid.NewGuid()).ToList();
+
+        Assert.IsTrue(spawnPositions.Count >= numOfPlayers, "Not enough spawn positions for the number of players");
 
         //Spawn players
         for (int i = 0; i < numOfPlayers; i++)
@@ -59,13 +76,13 @@ public class GameManager : MonoBehaviour
             var player = Instantiate(playerPrefab, spawnPositions[i].transform.position, Quaternion.identity);
             player.config = playerConfigs[i];
             player.playerListIndex = i;
+            players[i].playerGameObject = player; //Assign player game object to player info
         }
         //Clean up the spawn position game objects
         foreach (var spawnPosition in spawnPositions)
         {
             Destroy(spawnPosition.gameObject);
         }
-
     }
 
     // Start is called before the first frame update
@@ -96,19 +113,12 @@ public class GameManager : MonoBehaviour
     public void PlayerHealthReached0(PlayerScript player)
     {
         //When a player dies, we need to add score to all the other players
-
+        Debug.Log("GameManager: PlayerHealthReached0");
         foreach (var p in players)
         {
-            try
+            if (p.IsAlive())
             {
-                if (p.IsAlive)
-                {
-                    p.score += 1;
-                }
-            }
-            catch
-            {
-
+                p.score += 1;
             }
         }
 
@@ -116,13 +126,26 @@ public class GameManager : MonoBehaviour
         UpdateUI(players);
 
         //Then if there are only one player alive, we declare a winner.
-        if (players.Count(p => p.IsAlive) == 1)
+        if (players.Count(p => p.IsAlive()) == 1)
         {
             //Give living player 1 point
-            var winner = players.First(p => p.IsAlive);
+            var winner = players.First(p => p.IsAlive());
             winner.score += 1;
 
-            SceneManager.LoadScene("WinScene"); //Win scene has an animator script which will show the winner
+            //A player has enough score to win, we end the game, if not we load a new level
+            //CHEck all players
+            if (players.Any(p => p.score >= winningScore))
+            {
+                //End game
+                FinishRound();
+            }
+            else
+            {
+                //Load new level
+                LoadNewRandomLevelAsync(numberOfPlayers);
+            }
+
+
         }
 
         //Pause game
@@ -131,21 +154,35 @@ public class GameManager : MonoBehaviour
 
     private void FinishRound()
     {
-        throw new NotImplementedException();
+        SceneManager.LoadScene("WinScene"); //Win scene has an animator script which will show the winner
     }
 
     private void UpdateUI(List<PlayerInfo> players)
     {
         //FOR each player in players, set the score in the UI
+        Debug.Log("GameManager: UpdateUI");
         foreach (var p in players)
         {
-            p.uiScoreLabel.AddScore(p.score);
+            p.uiScoreLabel.SetScore(p.score);
+        }
+    }
+
+
+    //Contect menu item to kill a ransom living player
+    [ContextMenu("Kill a random player")]
+    public void KillRandomPlayer()
+    {
+        var livingPlayers = players.Where(p => p.IsAlive()).ToList();
+        if (livingPlayers.Count > 0)
+        {
+            var randomPlayer = livingPlayers[UnityEngine.Random.Range(0, livingPlayers.Count)];
+            randomPlayer.playerGameObject.TakeDamage(100);
         }
     }
 
     internal class PlayerInfo
     {
-        public PlayerScript player;
+        public PlayerScript playerGameObject;
 
         public PlayerConfig config;
 
@@ -153,8 +190,13 @@ public class GameManager : MonoBehaviour
 
         public int score = 0;
 
-        public bool IsAlive => player != null || player.health > 0;
-
+        public bool IsAlive()
+        {
+            if (playerGameObject == null)
+            {
+                return false;
+            }
+            return playerGameObject.health > 0;
+        }
     }
-
 }

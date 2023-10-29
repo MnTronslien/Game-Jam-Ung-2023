@@ -8,6 +8,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerConfig", menuName = "ScriptableObjects/PlayerConfig", order = 1)]
 public class PlayerConfig : ScriptableObject
 {
+    public string playerName = "Johnny";
     public Color color = Color.white;
     public KeyCode leftThrusterKey = KeyCode.A;
     public KeyCode rightThrusterKey = KeyCode.D;
