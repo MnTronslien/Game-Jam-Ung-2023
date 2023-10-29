@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
             var player = Instantiate(playerPrefab, spawnPositions[i].transform.position, Quaternion.identity);
             player.config = playerConfigs[i];
             player.playerListIndex = i;
+            players[i].playerGameObject = player; //Assign player game object to player info
         }
         //Clean up the spawn position game objects
         foreach (var spawnPosition in spawnPositions)
@@ -95,19 +96,13 @@ public class GameManager : MonoBehaviour
     public void PlayerHealthReached0(PlayerScript player)
     {
         //When a player dies, we need to add score to all the other players
-
+        Debug.Log("GameManager: PlayerHealthReached0");
         foreach (var p in players)
         {
-            try
+            Debug.Log($"Player {p.config.name} is alive: {p.IsAlive()}");
+            if (p.IsAlive())
             {
-                if (p.IsAlive)
-                {
-                    p.score += 1;
-                }
-            }
-            catch
-            {
-
+                p.score += 1;
             }
         }
 
@@ -115,10 +110,10 @@ public class GameManager : MonoBehaviour
         UpdateUI(players);
 
         //Then if there are only one player alive, we declare a winner.
-        if (players.Count(p => p.IsAlive) == 1)
+        if (players.Count(p => p.IsAlive()) == 1)
         {
             //Give living player 1 point
-            var winner = players.First(p => p.IsAlive);
+            var winner = players.First(p => p.IsAlive());
             winner.score += 1;
 
             SceneManager.LoadScene("WinScene"); //Win scene has an animator script which will show the winner
@@ -136,15 +131,30 @@ public class GameManager : MonoBehaviour
     private void UpdateUI(List<PlayerInfo> players)
     {
         //FOR each player in players, set the score in the UI
+        Debug.Log("GameManager: UpdateUI");
         foreach (var p in players)
         {
-            p.uiScoreLabel.AddScore(p.score);
+            Debug.Log($"Score for player {p.config.name} is {p.score}");
+            p.uiScoreLabel.SetScore(p.score);
+        }
+    }
+
+
+    //Contect menu item to kill a ransom living player
+    [ContextMenu("Kill a random player")]
+    public void KillRandomPlayer()
+    {
+        var livingPlayers = players.Where(p => p.IsAlive()).ToList();
+        if (livingPlayers.Count > 0)
+        {
+            var randomPlayer = livingPlayers[UnityEngine.Random.Range(0, livingPlayers.Count)];
+            randomPlayer.playerGameObject.TakeDamage(100);
         }
     }
 
     internal class PlayerInfo
     {
-        public PlayerScript player;
+        public PlayerScript playerGameObject;
 
         public PlayerConfig config;
 
@@ -152,8 +162,13 @@ public class GameManager : MonoBehaviour
 
         public int score = 0;
 
-        public bool IsAlive => player != null || player.health > 0;
-
+        public bool IsAlive()
+        {
+            if (playerGameObject == null)
+            {
+                return false;
+            }
+            return playerGameObject.health > 0;
+        }
     }
-
 }

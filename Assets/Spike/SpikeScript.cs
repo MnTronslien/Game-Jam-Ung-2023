@@ -24,7 +24,7 @@ public class SpikeScript : MonoBehaviour
         newColor.a = sinus;
         SpriteGlow.color = newColor;
     }
-
+    
     void OnCollisionEnter2D(Collision2D collision)
     {
         Collider2D other = collision.collider;
