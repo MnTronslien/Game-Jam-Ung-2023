@@ -3,34 +3,60 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+using UnityEngine.UIElements.Experimental;
 
 public class LevelRotation : MonoBehaviour
 {
-    public float TargetSpeed = 2f;
-    [SerializeField] private float realSpeed = 0f;
-    [SerializeField] private float waitfor = 0f;
-    public int Creativity = 5;
+    // rotation speed
+    public Vector2 speedRange = new Vector2(5, 10);
+    // rotation duration
+    public Vector2 durationRange = new Vector2(2f, 10f);
+
+    public AnimationCurve curve;
     void Start()
     {
-        
+        NewRotationMethod();
     }
 
     // Update is called once per frame
-    void Update()
-    {   
-        if (waitfor <= 0f) {
-            waitfor = UnityEngine.Random.Range(20f/Creativity, 200f/Creativity);
-            TargetSpeed = (float)Math.Round(UnityEngine.Random.Range(-10f*Creativity/3, 10f*Creativity/3),3);
-        }else{
-            waitfor -= Time.deltaTime;
+
+    private async void NewRotationMethod()
+    {
+        while (true)
+        {
+            if (this == null) return;
+            //Generate a random speed
+            float rotationSpeed = UnityEngine.Random.Range(speedRange.x, speedRange.y);
+
+            //Multiply with time since level load and cap it at a max
+            rotationSpeed *= Time.timeSinceLevelLoad * 0.1f;
+            rotationSpeed = Mathf.Min(rotationSpeed, speedRange.y*2);
+
+
+            //50% chance to rotate clockwise or counter clockwise
+            if (UnityEngine.Random.value > 0.5f)
+            {
+                rotationSpeed *= -1;
+            }
+            //Generate a random duration
+            float rotationDuration = UnityEngine.Random.Range(durationRange.x, durationRange.y);
+            await RotateObjectAsync(rotationDuration, rotationSpeed);
         }
-        
-        if (realSpeed < TargetSpeed){
-            realSpeed += (float)Math.Round(0.01f + realSpeed/2f*Time.deltaTime,3);
-        }else if(realSpeed > TargetSpeed){
-            realSpeed -= (float)Math.Round(0.01f + realSpeed/2f*Time.deltaTime,3);
+    }
+
+    private async UniTask RotateObjectAsync(float rotationDuration, float rotationSpeed)
+    {
+    
+        float startTime = Time.time;
+
+        while (Time.time - startTime < rotationDuration)
+        {
+            if (this == null) return;
+            //modify speed based on the curve and the time elapsed
+            float rotSpeed = rotationSpeed * curve.Evaluate((Time.time - startTime) / rotationDuration);
+            transform.Rotate(Vector3.forward, rotSpeed * Time.deltaTime);
+            await UniTask.Yield(PlayerLoopTiming.Update);
         }
-        
-        if(math.abs(realSpeed) - math.abs(TargetSpeed) > 0.2f || math.abs(realSpeed) - math.abs(TargetSpeed) < 0.2f) transform.Rotate(new Vector3(0, 0, realSpeed * Time.deltaTime));
     }
 }
