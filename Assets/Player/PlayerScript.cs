@@ -38,6 +38,8 @@ public class PlayerScript : MonoBehaviour
 
     public float CoolDown = 0f;
 
+    private TrailRenderer trailRenderer;
+
 
     public enum PlayerNumber
     {
@@ -50,6 +52,7 @@ public class PlayerScript : MonoBehaviour
     {
         //Set player color
         GetComponent<SpriteRenderer>().color = config.color;
+        GetComponent<TrailRenderer>().startColor = config.color;
     }
 
     // Update is called once per frame
