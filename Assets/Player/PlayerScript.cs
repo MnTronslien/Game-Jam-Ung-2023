@@ -9,7 +9,8 @@ public class PlayerScript : MonoBehaviour
 {
 
     public PlayerNumber playerNumber;
-    public Color playerColor = Color.white;
+
+    public PlayerConfig config;
 
     //Stats player health
     public int health = 100;
@@ -27,12 +28,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject PowEffect;
     public GameObject leftThruster;
     public GameObject rightThruster;
-
-    public KeyCode leftThrusterKey = KeyCode.A;
-    public KeyCode rightThrusterKey = KeyCode.D;
-    public KeyCode thrustKey = KeyCode.S;
-
-
+    
 
     //Visuals
     public ParticleSystem leftThrusterParticles;
@@ -53,8 +49,7 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         //Set player color
-        GetComponent<SpriteRenderer>().color = playerColor;
-        GameManager.Instance.AddPlayer(this);
+        GetComponent<SpriteRenderer>().color = config.color;
     }
 
     // Update is called once per frame
@@ -123,9 +118,9 @@ public class PlayerScript : MonoBehaviour
 
     private void GetInput()
     {
-        leftInput = Input.GetKey(leftThrusterKey) ? 1 : 0;
-        rightInput = Input.GetKey(rightThrusterKey) ? 1 : 0;
-        thrust = Input.GetKey(thrustKey) ? 1 : 0;
+        leftInput = Input.GetKey(config.leftThrusterKey) ? 1 : 0;
+        rightInput = Input.GetKey(config.rightThrusterKey) ? 1 : 0;
+        thrust = Input.GetKey(config.thrustKey) ? 1 : 0;
     }
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.tag == "Player"){

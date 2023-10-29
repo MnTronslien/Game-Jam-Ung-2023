@@ -33,8 +33,8 @@ public class SpikeScript : MonoBehaviour
         if (other.TryGetComponent<PlayerScript>(out var player))
         {
             Debug.Log("Collided with player");
-            player.TakeDamage(damage);
             otherRigidBody.AddForce(force * Time.deltaTime * transform.up);
+            player.TakeDamage(damage);
         }
     }
 }

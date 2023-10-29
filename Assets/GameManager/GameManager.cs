@@ -1,21 +1,71 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cysharp.Threading.Tasks;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance;
     private List<PlayerInfo> players = new List<PlayerInfo>();
+    [SerializeField] private PlayerScript playerPrefab;
+    [SerializeField] private PlayerConfig[] playerConfigs;
 
     //UI score script prefab
     public UiScoreLabel uiScoreLabelPrefab;
 
+    private int numberOfPlayers = 2;
+    public async void StartGame(int numOfPlayers)
+    {
+        numberOfPlayers = numOfPlayers;
 
+        //Set up players, but dont load any levels or spawn anything yet
+        for (int i = 0; i < numOfPlayers; i++)
+        {
+            //Create a new player info
+            var newPlayer = new PlayerInfo
+            {
+                config = playerConfigs[i],
+                score = 0,
+            };
+
+            newPlayer.uiScoreLabel = Instantiate(uiScoreLabelPrefab, uiScoreLabelPrefab.transform.position, Quaternion.identity);
+            newPlayer.uiScoreLabel.transform.SetParent(uiScoreLabelPrefab.transform.parent);
+            newPlayer.uiScoreLabel.SetColor(newPlayer.config.color);
+            newPlayer.uiScoreLabel.SetScore(0);
+            newPlayer.uiScoreLabel.gameObject.SetActive(true);
+            players.Add(newPlayer);
+        }
+        uiScoreLabelPrefab.gameObject.SetActive(false);
+
+
+
+
+
+        //Select a random level, but for now just load indext 2. NB: Remember to add the scene to the build settings
+        await SceneManager.LoadSceneAsync(2);
+
+        //Get spawn positions
+        var spawnPositions = FindObjectsOfType<SpawnPosition>().ToList();
+        //Scramble spawn positions
+        spawnPositions = spawnPositions.OrderBy(x => Guid.NewGuid()).ToList();
+
+        //Spawn players
+        for (int i = 0; i < numOfPlayers; i++)
+        {
+            var player = Instantiate(playerPrefab, spawnPositions[i].transform.position, Quaternion.identity);
+            player.config = playerConfigs[i];
+            player.playerListIndex = i;
+        }
+        //Clean up the spawn position game objects
+        foreach (var spawnPosition in spawnPositions)
+        {
+            Destroy(spawnPosition.gameObject);
+        }
+
+    }
 
     // Start is called before the first frame update
     void Awake()
@@ -27,14 +77,12 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(Instance);
+        DontDestroyOnLoad(uiScoreLabelPrefab.transform.root);
     }
 
     void Start()
     {
-
         uiScoreLabelPrefab.gameObject.SetActive(false);
-
-
     }
 
     // Update is called once per frame
@@ -43,24 +91,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void AddPlayer(PlayerScript player)
-    {
-        var newPlayer = new PlayerInfo()
-        {
-            player = player,
-            color = player.playerColor,
-            uiScoreLabel = Instantiate(uiScoreLabelPrefab, uiScoreLabelPrefab.transform.parent)
-        };
-        newPlayer.uiScoreLabel.SetColor(newPlayer.color);
-        newPlayer.uiScoreLabel.SetScore(0);
-        newPlayer.uiScoreLabel.gameObject.SetActive(true);
-
-        players.Add(newPlayer);
-
-
-        //move player ui to the right place
-
-    }
 
     public void PlayerHealthReached0(PlayerScript player)
     {
@@ -68,9 +98,16 @@ public class GameManager : MonoBehaviour
 
         foreach (var p in players)
         {
-            if (p.IsAlive)
+            try
             {
-                p.score += 1;
+                if (p.IsAlive)
+                {
+                    p.score += 1;
+                }
+            }
+            catch
+            {
+
             }
         }
 
@@ -109,13 +146,13 @@ public class GameManager : MonoBehaviour
     {
         public PlayerScript player;
 
+        public PlayerConfig config;
+
         public UiScoreLabel uiScoreLabel;
 
         public int score = 0;
 
-        public Color color;
-
-        public bool IsAlive => player.health > 0;
+        public bool IsAlive => player != null || player.health > 0;
 
     }
 
