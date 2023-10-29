@@ -4,10 +4,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cysharp.Threading.Tasks;
+using TMPro;
+using System.Threading.Tasks;
+using UnityEngine.Assertions;
 
 public class GameManager : MonoBehaviour
 {
 
+    public int winningScore = 15;
     public static GameManager Instance;
     private List<PlayerInfo> players = new List<PlayerInfo>();
     [SerializeField] private PlayerScript playerPrefab;
@@ -43,14 +47,25 @@ public class GameManager : MonoBehaviour
 
 
 
+        await LoadNewRandomLevelAsync(numOfPlayers);
 
-        //Select a random level, but for now just load indext 2. NB: Remember to add the scene to the build settings
-        await SceneManager.LoadSceneAsync(2);
+        
+
+    }
+
+    private async Task LoadNewRandomLevelAsync(int numOfPlayers)
+    {
+        //Select a random level but exlude the first 2 levels and the last level
+        var levelIndex = UnityEngine.Random.Range(3, SceneManager.sceneCountInBuildSettings);
+
+        await SceneManager.LoadSceneAsync(levelIndex);
 
         //Get spawn positions
         var spawnPositions = FindObjectsOfType<SpawnPosition>().ToList();
         //Scramble spawn positions
         spawnPositions = spawnPositions.OrderBy(x => Guid.NewGuid()).ToList();
+
+        Assert.IsTrue(spawnPositions.Count >= numOfPlayers, "Not enough spawn positions for the number of players");
 
         //Spawn players
         for (int i = 0; i < numOfPlayers; i++)
@@ -65,7 +80,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(spawnPosition.gameObject);
         }
-
     }
 
     // Start is called before the first frame update
@@ -99,7 +113,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameManager: PlayerHealthReached0");
         foreach (var p in players)
         {
-            Debug.Log($"Player {p.config.name} is alive: {p.IsAlive()}");
             if (p.IsAlive())
             {
                 p.score += 1;
@@ -116,7 +129,20 @@ public class GameManager : MonoBehaviour
             var winner = players.First(p => p.IsAlive());
             winner.score += 1;
 
-            SceneManager.LoadScene("WinScene"); //Win scene has an animator script which will show the winner
+            //A player has enough score to win, we end the game, if not we load a new level
+            //CHEck all players
+            if (players.Any(p => p.score >= winningScore))
+            {
+                //End game
+                FinishRound();
+            }
+            else
+            {
+                //Load new level
+                LoadNewRandomLevelAsync(numberOfPlayers);
+            }
+
+
         }
 
         //Pause game
@@ -125,7 +151,7 @@ public class GameManager : MonoBehaviour
 
     private void FinishRound()
     {
-        throw new NotImplementedException();
+        SceneManager.LoadScene("WinScene"); //Win scene has an animator script which will show the winner
     }
 
     private void UpdateUI(List<PlayerInfo> players)
@@ -134,7 +160,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameManager: UpdateUI");
         foreach (var p in players)
         {
-            Debug.Log($"Score for player {p.config.name} is {p.score}");
             p.uiScoreLabel.SetScore(p.score);
         }
     }
