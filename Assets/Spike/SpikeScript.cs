@@ -10,6 +10,10 @@ public class SpikeScript : MonoBehaviour
     public SpriteRenderer SpriteGlow, SpriteFaded;
     public float glowAmount;
 
+    [Header("Audio")]
+    public List<AudioClip> soundOnHit;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +39,9 @@ public class SpikeScript : MonoBehaviour
             Debug.Log("Collided with player");
             otherRigidBody.AddForce(force * Time.deltaTime * transform.up);
             player.TakeDamage(damage);
+            
+            var grunt = soundOnHit[UnityEngine.Random.Range(0, soundOnHit.Count)];
+            DropSoundManager.Instance.PlayDropSound(grunt, varyPitch:true);
         }
     }
 }
