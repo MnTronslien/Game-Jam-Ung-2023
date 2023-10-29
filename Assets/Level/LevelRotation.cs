@@ -9,11 +9,11 @@ using UnityEngine.UIElements.Experimental;
 public class LevelRotation : MonoBehaviour
 {
     // rotation speed
-    public Vector2 speedRange = new Vector2(5, 10);
+    public Vector2 speedRange = new Vector2(30, 100);
     // rotation duration
     public Vector2 durationRange = new Vector2(2f, 10f);
 
-    public AnimationCurve curve;
+    public AnimationCurve curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.5f, 1), new Keyframe(0, 1));
     void Start()
     {
         NewRotationMethod();
